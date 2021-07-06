@@ -8,7 +8,7 @@
 # For building:
 # docker build --build-arg branch="v1.15.1" -t kazu1192/archlinux .
 
-FROM archlinux:base
+FROM archlinux
 
 # Put the latest mirrorlist for Arch Linux in place
 COPY mirrorlist /etc/pacman.d/mirrorlist
