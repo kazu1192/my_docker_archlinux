@@ -76,27 +76,15 @@ RUN sudo -u ${USERNAME} makepkg --noconfirm -si &&\
     rm -rf /home/${USERNAME}/.cache &&\
     rm -rf /build
 
-# Initialize install
-USER ${USERNAME}
-RUN yay -Syyu --noconfirm \
-    vim neovim fd fzf ripgrep awk w3m tig zsh tmux global man man-pages-ja &&\
-    : "Remove all packages cache " &&\
-    yay -Scc --noconfirm
-
+# dotfiles
 WORKDIR "/home/${USERNAME}"
+USER ${USERNAME}
 ARG branch=master
 RUN git clone --branch $branch\
     https://github.com/kazu1192/dotfiles.git .dotfiles &&\
     bash .dotfiles/install.sh
 
-# Install zinit
-RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/install.sh)"
-
-# Install vim-plugin
-RUN curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
-CMD ["/usr/bin/zsh"]
+CMD ["/bin/bash"]
 
 LABEL maintainer="kazu1192 <kazu1192@protonmail.com>"\
       description="My ArchLinux container."\
